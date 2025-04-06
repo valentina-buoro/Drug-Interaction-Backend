@@ -5,12 +5,10 @@ import joblib
 import os
 import time
 
-app = Flask(__name__)
 
 
 bp = Blueprint('drug_interaction', __name__, url_prefix='/predict')
 
-# Load trained XGBoost model
 model = joblib.load("flaskr/xgboost_model.pkl")
 
 def featurize_smiles(smiles1, smiles2):
@@ -66,8 +64,6 @@ def featurize_smiles(smiles1, smiles2):
         return None, f"Error in Drug2 featurization: {err2}"
 
     combined_feat = pd.concat([feat1, feat2], axis=1)
-    #combined_feat = combined_feat.drop(columns=['Drug1_key', 'Drug2_key', 'Drug1_input', 'Drug2_input'])
-    #combined_feat = [f"{label}_fps-{col}" for col in range(combined_feat.shape[1])]
     return combined_feat, None
 
 
@@ -89,15 +85,6 @@ def predict():
     
     prediction = model.predict(features)
     
-    return jsonify({"smiles1": smiles1, "smiles2": smiles2, "prediction": prediction.tolist()})
+    return jsonify({"smiles1": smiles1, "smiles2": smiles2, "prediction": (prediction + 1).tolist()})
 
-
-
-@bp.route('/hello-dear')
-def hello():
-    return 'Hello, World! oooooo'
-
-
-if __name__ == "__main__":
-    app.run()
 
