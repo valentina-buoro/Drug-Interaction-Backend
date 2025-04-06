@@ -90,10 +90,5 @@ def predict():
 
 
 
-@bp.route('/hello-dear')
-def hello():
-    return 'Hello, World! oooooo'
-
-
 
 
