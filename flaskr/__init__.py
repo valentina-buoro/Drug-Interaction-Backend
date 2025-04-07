@@ -1,5 +1,5 @@
 import os
-from flask import Flask
+from flask import Flask, render_template
 from flask_cors import CORS
 
 
@@ -27,7 +27,7 @@ def create_app(test_config=None,*args, **kwargs):
 
     @app.route('/')
     def hello():
-        return '<h1>Welcome to the Drug Interaction Predictor</h1><p>Enter your SMILES strings below.</p>'
+        return render_template('index.html')
 
     from . import drug_interaction
     app.register_blueprint(drug_interaction.bp)
